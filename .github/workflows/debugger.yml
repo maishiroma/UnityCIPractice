@@ -1,0 +1,14 @@
+name: Debugger
+on: [workflow_dispatch]
+
+jobs:
+  debug:
+    runs-on: windows-2019
+    steps:
+      - name: checkout master
+        uses: actions/checkout@v2
+      - name: Print Vars
+        run: |
+          write-host "1: ${env:GITHUB_WORKSPACE}"
+          write-host "2: ${{ env.GITHUB_WORKSPACE }}"
+          write-host "3: $Env:GITHUB_WORKSPACE"

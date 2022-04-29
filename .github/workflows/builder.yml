@@ -16,6 +16,7 @@ jobs:
         with:
           ref: master
       - name: Build Project
+        id: buildunity
         uses: game-ci/unity-builder@v2
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -34,3 +35,9 @@ jobs:
           name: mygame-${{ matrix.targetPlatform }}-0.1.0
           path: Builds/${{ matrix.targetPlatform }}
           retention-days: 1
+      - name: Printer
+        if: ${{ steps.buildunity.outputs.version }}
+        env:
+          RESULT: ${{ steps.buildunity.outputs.version }}
+        run: |
+          echo "${RESULT}"

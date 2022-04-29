@@ -1,0 +1,38 @@
+name: Unity Builder
+on:
+  pull_request_review_comment: # PR Comment
+    types: [created]
+  issue_comment:  # PR Comment
+    types: [created]
+
+jobs:
+  buildProject:
+    name: Build for Windows
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        targetPlatform:
+          - StandaloneWindows
+  
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Build Project
+        uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: ${{ matrix.targetPlatform }}
+          projectPath: ${{ env.GITHUB_WORKSPACE }}
+          buildName: Build-${{ matrix.targetPlatform }}
+          buildMethod: Builder.Build
+      - name: Upload Build
+        uses: actions/upload-artifact@v2
+        with:
+          name: Build-${{ matrix.targetPlatform }}
+          path: Build/${{ matrix.targetPlatform }}
+          retentionDays: 1

@@ -1,9 +1,5 @@
 name: Unity Builder
-on:
-  pull_request_review_comment: # PR Comment
-    types: [created]
-  issue_comment:  # PR Comment
-    types: [created]
+on: [workflow_dispatch]
 
 jobs:
   buildProject:
@@ -18,7 +14,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: master
       - name: Build Project
         uses: game-ci/unity-builder@v2
         env:

@@ -24,9 +24,9 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
-          projectPath: ${env:GITHUB_WORKSPACE}
+          projectPath: ${{ env.GITHUB_WORKSPACE }}
           buildName: mygame-${{ matrix.targetPlatform }}-0.1.0
-          buildsPath: ${env:GITHUB_WORKSPACE}\Builds
+          buildsPath: ${GITHUB_WORKSPACE}\Builds
           versioning: Custom
           version: 0.1.0
       # - name: Upload Build

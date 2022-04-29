@@ -24,20 +24,20 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
-          projectPath: ${{ env.GITHUB_WORKSPACE }}
+          projectPath: ${env:GITHUB_WORKSPACE}
           buildName: mygame-${{ matrix.targetPlatform }}-0.1.0
-          buildsPath: ${{ env.GITHUB_WORKSPACE }}Builds
+          buildsPath: ${env:GITHUB_WORKSPACE}\Builds
           versioning: Custom
           version: 0.1.0
-      - name: Upload Build
-        uses: actions/upload-artifact@v2
-        with:
-          name: mygame-${{ matrix.targetPlatform }}-0.1.0
-          path: Builds/${{ matrix.targetPlatform }}
-          retention-days: 1
+      # - name: Upload Build
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: mygame-${{ matrix.targetPlatform }}-0.1.0
+      #     path: Builds/${{ matrix.targetPlatform }}
+      #     retention-days: 1
       - name: Printer
-        if: ${{ steps.buildunity.outputs.version }}
+        if: ${{ steps.buildunity.outputs.buildVersion }}
         env:
-          RESULT: ${{ steps.buildunity.outputs.version }}
+          RESULT: ${{ steps.buildunity.outputs.buildVersion }}
         run: |
           echo "${RESULT}"

@@ -25,10 +25,10 @@ jobs:
           targetPlatform: ${{ matrix.targetPlatform }}
           projectPath: ${{ env.GITHUB_WORKSPACE }}
           buildName: Build-${{ matrix.targetPlatform }}
-          buildMethod: Builder.Build
+          buildsPath: ${{ env.GITHUB_WORKSPACE }}/Builds
       - name: Upload Build
         uses: actions/upload-artifact@v2
         with:
           name: Build-${{ matrix.targetPlatform }}
-          path: Build/${{ matrix.targetPlatform }}
+          path: Builds/${{ matrix.targetPlatform }}
           retention-days: 1

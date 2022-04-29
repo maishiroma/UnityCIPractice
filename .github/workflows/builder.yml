@@ -27,14 +27,13 @@ jobs:
           buildName: mygame-${{ matrix.targetPlatform }}-0.1.0
           versioning: Custom
           version: 0.1.0
-      # - name: Upload Build
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: mygame-${{ matrix.targetPlatform }}-0.1.0
-      #     path: Builds/${{ matrix.targetPlatform }}
-      #     retention-days: 1
+      - name: Upload Build
+        uses: actions/upload-artifact@v2
+        with:
+          name: mygame-${{ matrix.targetPlatform }}-0.1.0
+          path: build/${{ matrix.targetPlatform }}
+          retention-days: 1
       - name: Printer
         if: ${{ steps.buildunity.outputs.buildVersion }}
         run: |
-          echo ${GITHUB_WORKSPACE}
-          ls ${GITHUB_WORKSPACE}
+          ls ${GITHUB_WORKSPACE}/build

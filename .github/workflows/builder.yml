@@ -24,9 +24,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
-          projectPath: ${{ env.GITHUB_WORKSPACE }}
           buildName: mygame-${{ matrix.targetPlatform }}-0.1.0
-          buildsPath: ${GITHUB_WORKSPACE}\Builds
           versioning: Custom
           version: 0.1.0
       # - name: Upload Build
@@ -37,7 +35,6 @@ jobs:
       #     retention-days: 1
       - name: Printer
         if: ${{ steps.buildunity.outputs.buildVersion }}
-        env:
-          RESULT: ${{ steps.buildunity.outputs.buildVersion }}
         run: |
-          echo "${RESULT}"
+          echo ${GITHUB_WORKSPACE}
+          ls ${GITHUB_WORKSPACE}

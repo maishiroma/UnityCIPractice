@@ -4,7 +4,8 @@ on: [workflow_dispatch]
 jobs:
   buildProject:
     name: Build for Windows
-    runs-on: ubuntu-latest
+    runs-on: windows-2019
+    #runs-on: ubuntu-latest
     strategy:
       matrix:
         targetPlatform:
@@ -24,11 +25,13 @@ jobs:
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
           projectPath: ${{ env.GITHUB_WORKSPACE }}
-          buildName: Build-${{ matrix.targetPlatform }}
+          buildName: mygame-${{ matrix.targetPlatform }}-0.1.0
           buildsPath: ${{ env.GITHUB_WORKSPACE }}/Builds
+          versioning: Custom
+          version: 0.1.0
       - name: Upload Build
         uses: actions/upload-artifact@v2
         with:
-          name: Build-${{ matrix.targetPlatform }}
+          name: mygame-${{ matrix.targetPlatform }}-0.1.0
           path: Builds/${{ matrix.targetPlatform }}
           retention-days: 1

@@ -31,4 +31,4 @@ jobs:
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: Build/${{ matrix.targetPlatform }}
-          retentionDays: 1
+          retention-days: 1

@@ -11,3 +11,4 @@ jobs:
         run: |
           ls
           pwd
+          [System.Environment]::OSVersion.Platform

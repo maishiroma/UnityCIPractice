@@ -1,0 +1,43 @@
+name: Run Unity Unit Tests
+
+on:
+  pull_request: # PR pushes or when a PR merges
+      types:
+        - synchronize
+        - opened
+        - reopened
+        - closed
+      branches:
+        - master
+      paths:
+        - 'Assets/**'
+
+jobs:
+  unit_tester:
+    name: Run Unity Unit Test Suite
+    runs-on: windows-2019
+
+    steps:
+      - name: Checkout latest PR commit
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # pinned to v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Run Unit Test Suite
+        id: unittests
+        uses: maishiroma/unity-test-runner@win_support
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get Latest Project Version
+        id: parsed
+        run: |
+          $result = Select-String -Path ${env:GITHUB_WORKSPACE}\ProjectSettings\ProjectSettings.asset -Pattern "bundleVersion:" | ForEach-Object { ([string]$_).Split(" ")[3] } | % Trim
+          Write-Output "::set-output name=version::$result"
+      - name: Upload Test Results to GitHub Actions
+        uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # pinned to tag v3
+        if: always()
+        with:
+          name: Test_${{ steps.parsed.outputs.version }}_unit_tests_results
+          path: ${{ steps.unittests.outputs.artifactsPath }}
+          retention-days: 1
